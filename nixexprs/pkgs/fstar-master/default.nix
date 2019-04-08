@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "FStarLang";
     repo = "FStar";
-    rev = "d0fd258d495b5e138b5237ca9d922531aa143311";
-    sha256 = "1rl00mg7lipnkyhmsryaqs5i5gbdsylfsfmqavqa39pqnd17lfmj";
+    rev = "66d92e8a21ae8f02f39970d7c1d080d6eddabe94";
+    sha256 = "1jxmh6bjqm69jsrisqazqlhrhjpn0a6brc1h27df5x3asq8gxz4j";
     fetchSubmodules = false;
   };
 
