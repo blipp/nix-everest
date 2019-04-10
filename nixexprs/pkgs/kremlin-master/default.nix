@@ -4,20 +4,13 @@ stdenv.mkDerivation rec {
   name = "kremlin-master-${version}";
   version = "0.9.6.0";
 
-  #src = fetchFromGitHub {
-    #owner = "FStarLang";
-    #repo = "kremlin";
-    #rev = "d8ba3898f9b0269b671a72d6e8ed0dff75371965";
-    #sha256 = "1jjc40rri1d509km6zwy8myra3bkpp6zfffgvwc17gaz02z2h7yw";
-    #fetchSubmodules = false;
-  #};
+#  src = /home/volhovm/code/kremlin;
+
   src = fetchFromGitHub {
-    owner = "blipp";
+    owner = "FStarLang";
     repo = "kremlin";
-#    url = "https://github.com/blipp/kremlin";
-    rev = "b385c8add11edcefbd79e8c6f630d3d10f2b66d7";
-#   date = "2019-02-06T13:53:37+01:00";
-    sha256 = "1syip0w4d6ny4dhhyyqkld2f4qfri4xviibv6qqplahd3qy98v6s";
+    rev = "8e2499453d4abf04996147b735157eb4c62088b5";
+    sha256 = "0c60sgj6zwhpc2djm9wh2dz1h6n0kpx6cjf13si4qjx9w5knmbdf";
     fetchSubmodules = false;
   };
 
@@ -33,30 +26,23 @@ stdenv.mkDerivation rec {
   ];
 
   makeFlags = [ "PREFIX=$(out)"
-                ##"OCAMLPATH=" TODO Do I need to set this?
-                "FSTAR_HOME=${lib.getBin fstar-master}"
+                "FSTAR_HOME=${fstar-master}"
                 "KREMLIN_HOME=${src}"
               ];
 
-  # TODO Kremlin needs ulib, maybe this sits at the required path but without 'u',
-  # TODO because './lib/fstar/FStar.UInt128.fst' exists in the store…
+  preBuild = ''
+    # This is used by the 'install' target of kremlin
+    mkdir -p $out/share/kremlin/misc; cp -r misc/* $out/share/kremlin/misc/
 
-# TODO I don't know if ulib needs to be shebang patched
-  #preBuild = ''
-    #patchShebangs src/tools
-    #patchShebangs bin
-    #patchShebangs ulib
-  #'';
-# actually, I just want it to run make all, which is run by `make`
-#  buildFlags = "-C src/ocaml-output";
-
-#  preInstall = ''
-#    mkdir -p $out/lib/ocaml/${ocamlPackages.ocaml.version}/site-lib/fstarlib
-#  '';
-# I want to do make all
-#  installFlags = "-C src/ocaml-output";
+    # Hacl* (and possibly other programs) need this. It would bette be in share/ too
+    # but everest infrastructure will assume exactly this path in many other 
+    # places (like Hacl* makefiles).
+    mkdir -p $out/include; cp -r misc/* $out/include/
+    mkdir -p $out/kremlib; cp -r misc/* $out/kremlib/ # maybe put it under include too?
+  '';
+  # into the 'out' (i'm not sure which way is better @volhovm)
   postInstall = ''
-    wrapProgram $out/bin/krml --set FSTAR_HOME "${lib.getBin fstar-master}" --set KREMLIN_HOME "${src}"
+    wrapProgram $out/bin/krml --set FSTAR_HOME "${fstar-master}" --set KREMLIN_HOME "${src}"
   '';
 
   meta = with stdenv.lib; {
