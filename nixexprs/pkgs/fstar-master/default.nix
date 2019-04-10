@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "FStarLang";
     repo = "FStar";
-    rev = "66d92e8a21ae8f02f39970d7c1d080d6eddabe94";
-    sha256 = "1jxmh6bjqm69jsrisqazqlhrhjpn0a6brc1h27df5x3asq8gxz4j";
+    rev = "2e077f7cb05c3064e56d5cbf27c2cb29fda52ec8";
+    sha256 = "187sjsc9fks95z0a28r297w65v1xmb0pjwpqr4fqifvqzk3bp22r";
     fetchSubmodules = false;
   };
 
@@ -40,6 +40,7 @@ stdenv.mkDerivation rec {
   # TODO This wrapper should find the z3 path using some command,
   # TODO it should not be hardcoded.
   postInstall = ''
+    mkdir -p $out/ulib/; cp -rv ./ulib/ $out/
     wrapProgram $out/bin/fstar.exe --prefix PATH ":" "${lib.getBin z3-everest}/bin"
   '';
 
