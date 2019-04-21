@@ -29,8 +29,6 @@ stdenv.mkDerivation rec {
     patchShebangs bin
     patchShebangs ulib
   '';
-# actually, I just want it to run make all, which is run by `make`
-#  buildFlags = "-C src/ocaml-output";
 
   preInstall = ''
     mkdir -p $out/lib/ocaml/${ocamlPackages.ocaml.version}/site-lib/fstarlib
