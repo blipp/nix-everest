@@ -34,14 +34,17 @@ stdenv.mkDerivation rec {
     # This is used by the 'install' target of kremlin
     mkdir -p $out/share/kremlin/misc; cp -r misc/* $out/share/kremlin/misc/
 
-    # Hacl* (and possibly other programs) need this. It would bette be in share/ too
-    # but everest infrastructure will assume exactly this path in many other 
-    # places (like Hacl* makefiles).
-    mkdir -p $out/include; cp -r misc/* $out/include/
-    mkdir -p $out/kremlib; cp -r misc/* $out/kremlib/ # maybe put it under include too?
+    mkdir -p $out/include; cp -r include/* $out/include/
   '';
   # into the 'out' (i'm not sure which way is better @volhovm)
   postInstall = ''
+    # Hacl* (and possibly other programs) need this. It would bette be in share/ too
+    # but everest infrastructure will assume exactly this path in many other
+    # places (like Hacl* makefiles).
+    #
+    # It should be verified, so we put sources into the derivation after they were build.
+    mkdir -p $out/kremlib; cp -r kremlib/* $out/kremlib/ # maybe put it under include too?
+
     wrapProgram $out/bin/krml --set FSTAR_HOME "${fstar-master}" --set KREMLIN_HOME "${src}"
   '';
 
