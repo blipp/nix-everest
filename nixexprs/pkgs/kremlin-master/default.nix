@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "FStarLang";
     repo = "kremlin";
-    rev = "8e2499453d4abf04996147b735157eb4c62088b5";
-    sha256 = "0c60sgj6zwhpc2djm9wh2dz1h6n0kpx6cjf13si4qjx9w5knmbdf";
+    rev = "086a6d419484e2173483d995c4b2843b412e5a8e";
+    sha256 = "0q1kf3rkv9a30xdgxjr7qqibw90kk20f6bvr116d4x794kxyi72b";
     fetchSubmodules = false;
   };
 
@@ -21,8 +21,9 @@ stdenv.mkDerivation rec {
     ocaml-visitors # TODO this will be available in next version of NixOS
     ocaml findlib batteries menhir stdint
     zarith camlp4 yojson pprint
-    ulex ocaml-migrate-parsetree process ppx_deriving ppx_deriving_yojson ocamlbuild
-    fix wasm
+    ulex ocaml-migrate-parsetree process ppx_deriving ppx_deriving_yojson ppx_tools_versioned
+    ocamlbuild
+    sedlex fix wasm
   ];
 
   makeFlags = [ "PREFIX=$(out)"

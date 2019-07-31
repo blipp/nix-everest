@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "z3-everest-${version}";
-  version = "4.5.1";
+  version = "4.8.5";
 
   src = fetchFromGitHub {
     owner  = "Z3Prover";
     repo   = "z3";
-    rev    = "1f29cebd4df633a4fea50a29b80aa756ecd0e8e7";
-    sha256 = "0fn50fjcwps25q07z4mp90qmgmq8863jmzc76qb5cband4xg4r3j";
+    rev    = "e79542cc689d52ec4cb34ce4ae3fbe56e7a0bf70";
+    sha256 = "11sy98clv7ln0a5vqxzvh6wwqbswsjbik2084hav5kfws4xvklfa";
   };
 
   buildInputs = [ python fixDarwinDylibNames ];
